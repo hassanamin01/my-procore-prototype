@@ -198,16 +198,16 @@ function FormBody({ activeTab, setActiveTab }: FormBodyProps) {
               required
               colWidth={6}
               options={WEATHER_CONDITIONS}
-              getId={(o: Opt) => o.id}
-              getLabel={(o: Opt) => o.label}
+              getId={(o: Opt | null) => o?.id ?? ""}
+              getLabel={(o: Opt | null) => o?.label ?? ""}
             />
             <Form.Select
               name="workDelayReason"
               label="Work Delay Reason"
               colWidth={6}
               options={DELAY_REASONS}
-              getId={(o: Opt) => o.id}
-              getLabel={(o: Opt) => o.label}
+              getId={(o: Opt | null) => o?.id ?? ""}
+              getLabel={(o: Opt | null) => o?.label ?? ""}
             />
           </Form.Row>
           <Form.Row>
@@ -276,8 +276,8 @@ function FormBody({ activeTab, setActiveTab }: FormBodyProps) {
               required
               colWidth={6}
               options={WORK_STATUS_OPTIONS}
-              getId={(o: Opt) => o.id}
-              getLabel={(o: Opt) => o.label}
+              getId={(o: Opt | null) => o?.id ?? ""}
+              getLabel={(o: Opt | null) => o?.label ?? ""}
             />
           </Form.Row>
           <Form.Row>

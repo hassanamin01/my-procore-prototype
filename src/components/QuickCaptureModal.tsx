@@ -234,8 +234,8 @@ function FormBody({ showOptional, onToggleOptional, onClose }: FormBodyProps) {
             required
             colWidth={12}
             options={INCIDENT_TYPES}
-            getId={(o: Opt) => o.id}
-            getLabel={(o: Opt) => o.label}
+            getId={(o: Opt | null) => o?.id ?? ""}
+            getLabel={(o: Opt | null) => o?.label ?? ""}
           />
         </Form.Row>
 

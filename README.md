@@ -1,40 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# my-procore-prototype
+
+A Procore Quality & Safety UI prototype built with [Next.js](https://nextjs.org/) and the [`@procore/core-react`](https://www.npmjs.com/package/@procore/core-react) component library.
+
+---
+
+## Screenshots
+
+### Dashboard
+Project status at a glance — KPI cards, open incidents, inspection results, daily logs, overdue actions, and weather.
+
+![Dashboard](public/screenshots/dashboard.png)
+
+### Daily Log Entry
+A 7-tab form (Log Details, Weather, Manpower, Work Performed, Equipment, Incidents, Notes & Visitors) built with Procore Form components and Formik.
+
+![Daily Logs](public/screenshots/daily-logs.png)
+
+### Stage 1 Quick Capture
+One-tap incident reporting in under 30 seconds. Captures incident type, timestamp, and an optional photo/voice note. Triggers a persistent Stage 2 reminder banner.
+
+![Quick Capture](public/screenshots/quick-capture.png)
+
+---
+
+## Features
+
+- **Dashboard** — KPI cards (Safety Score, Open Incidents, Inspection Pass Rate, Daily Logs), incident breakdown, inspection summary, recent daily logs table, overdue corrective actions, and site weather.
+- **Daily Log Form** — Tabbed entry form with date/superintendent auto-fill, weather conditions, manpower tracking, and work narrative fields.
+- **Stage 1 Quick Capture** — Modal-based incident capture flow with immutable draft record and Stage 2 reminder banner.
+- **Sidebar navigation** — Collapsible sidebar with grouped nav: Overview, Quality & Safety, Planning.
+
+---
+
+## Tech Stack
+
+| Layer | Choice |
+|---|---|
+| Framework | Next.js 16 (Pages Router) |
+| UI library | @procore/core-react v12 |
+| Forms | Formik via `useFormContext` |
+| Styling | styled-components (SSR via ServerStyleSheet) |
+| Language | TypeScript |
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Build
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```bash
+npm run build   # uses --webpack flag for ESM compat
+npm start
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+```
+src/
+  pages/
+    index.tsx             # Dynamic import wrapper (ssr: false)
+    _document.tsx         # ServerStyleSheet for styled-components
+  components/
+    AppShell.tsx          # Top bar, sidebar, content routing, modal state
+    SidebarNav.tsx        # Grouped nav using Procore Menu
+    Dashboard.tsx         # KPI cards and summary panels
+    DailyLogForm.tsx      # 7-tab daily log entry form
+    QuickCaptureModal.tsx # Stage 1 incident quick capture
+```
