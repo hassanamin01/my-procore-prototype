@@ -4,6 +4,9 @@ import SidebarNav, { NavItemId } from "@/components/SidebarNav";
 import Dashboard from "@/components/Dashboard";
 import DailyLogForm from "@/components/DailyLogForm";
 import IncidentsPage from "@/components/IncidentsPage";
+import InspectionsPage from "@/components/InspectionsPage";
+import ObservationsPage from "@/components/ObservationsPage";
+import ActionPlansPage from "@/components/ActionPlansPage";
 import QuickCaptureModal from "@/components/QuickCaptureModal";
 
 // ── Placeholder view for unbuilt sections ──────────────────────────────────────
@@ -172,6 +175,12 @@ export default function AppShell() {
                   <DailyLogForm />
                 ) : activeNav === "incidents" ? (
                   <IncidentsPage />
+                ) : activeNav === "inspections" ? (
+                  <InspectionsPage />
+                ) : activeNav === "observations" ? (
+                  <ObservationsPage />
+                ) : activeNav === "action-plans" ? (
+                  <ActionPlansPage />
                 ) : (
                   <PlaceholderView id={activeNav} />
                 )}
