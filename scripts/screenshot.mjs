@@ -28,48 +28,48 @@ async function goTo(url) {
   return page;
 }
 
-// 1. Dashboard
+// Incidents list
 {
   const page = await goTo("http://localhost:3000");
-  await page.screenshot({ path: path.join(OUT_DIR, "dashboard.png") });
-  console.log("✓ dashboard.png");
-  await page.close();
-}
-
-// 2. Daily Logs form
-{
-  const page = await goTo("http://localhost:3000");
-  // Click the "Daily Logs" nav item by finding text node
   await page.evaluate(() => {
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     let node;
     while ((node = walker.nextNode())) {
-      if (node.textContent.trim() === "Daily Logs") {
-        node.parentElement.closest("[role=menuitem],[data-item]")
-          ? node.parentElement.closest("[role=menuitem],[data-item]").click()
-          : node.parentElement.click();
+      if (node.textContent.trim() === "Incidents") {
+        const el = node.parentElement;
+        el.click();
         break;
       }
     }
   });
   await new Promise(r => setTimeout(r, 800));
-  await page.screenshot({ path: path.join(OUT_DIR, "daily-logs.png") });
-  console.log("✓ daily-logs.png");
+  await page.screenshot({ path: path.join(OUT_DIR, "incidents.png") });
+  console.log("✓ incidents.png");
   await page.close();
 }
 
-// 3. Quick Capture modal
+// Incident detail (click first row)
 {
   const page = await goTo("http://localhost:3000");
-  // Click "Report Incident" button
   await page.evaluate(() => {
-    const btns = Array.from(document.querySelectorAll("button"));
-    const btn = btns.find(b => b.textContent.includes("Report Incident"));
-    if (btn) btn.click();
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      if (node.textContent.trim() === "Incidents") {
+        node.parentElement.click();
+        break;
+      }
+    }
   });
-  await new Promise(r => setTimeout(r, 600));
-  await page.screenshot({ path: path.join(OUT_DIR, "quick-capture.png") });
-  console.log("✓ quick-capture.png");
+  await new Promise(r => setTimeout(r, 800));
+  // Click first incident row
+  await page.evaluate(() => {
+    const el = document.querySelector("[style*='cursor: pointer']");
+    if (el) el.click();
+  });
+  await new Promise(r => setTimeout(r, 500));
+  await page.screenshot({ path: path.join(OUT_DIR, "incident-detail.png") });
+  console.log("✓ incident-detail.png");
   await page.close();
 }
 

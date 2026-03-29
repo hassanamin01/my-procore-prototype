@@ -3,6 +3,7 @@ import { Banner, Button, DetailPage, Page } from "@procore/core-react";
 import SidebarNav, { NavItemId } from "@/components/SidebarNav";
 import Dashboard from "@/components/Dashboard";
 import DailyLogForm from "@/components/DailyLogForm";
+import IncidentsPage from "@/components/IncidentsPage";
 import QuickCaptureModal from "@/components/QuickCaptureModal";
 
 // ── Placeholder view for unbuilt sections ──────────────────────────────────────
@@ -169,6 +170,8 @@ export default function AppShell() {
                   <Dashboard />
                 ) : activeNav === "daily-logs" ? (
                   <DailyLogForm />
+                ) : activeNav === "incidents" ? (
+                  <IncidentsPage />
                 ) : (
                   <PlaceholderView id={activeNav} />
                 )}
