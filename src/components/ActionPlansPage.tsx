@@ -5,9 +5,10 @@ import {
   Card,
   DetailPage,
   Form,
-  H2,
   Pill,
+  ProgressBar,
   Tabs,
+  Typography,
   useFormContext,
 } from "@procore/core-react";
 
@@ -130,11 +131,9 @@ const ACTION_STATUS_PILL: Record<ActionStatus, { color: "gray" | "blue" | "green
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ borderBottom: "2px solid #e5e7eb", marginBottom: 16, paddingBottom: 8 }}>
-      <H2 style={{ fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", color: "#6b7280", margin: 0 }}>
-        {children}
-      </H2>
-    </div>
+    <Typography intent="label" color="gray50" as="h2" style={{ textTransform: "uppercase", letterSpacing: "0.05em", borderBottom: "1px solid", paddingBottom: 8, marginBottom: 16 }}>
+      {children}
+    </Typography>
   );
 }
 
@@ -175,7 +174,7 @@ function NewPlanFormBody({ onCancel }: { onCancel: () => void }) {
       <Form.Row>
         <Form.TextArea name="description" label="Description" colWidth={12} />
       </Form.Row>
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 24, paddingTop: 20, borderTop: "1px solid #e5e7eb" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 24, paddingTop: 20, borderTop: "1px solid" }}>
         <Button variant="secondary" type="button" onClick={onCancel}>Cancel</Button>
         <Button variant="primary" type="submit" loading={isSubmitting}>Create Plan</Button>
       </div>
@@ -200,11 +199,11 @@ function PlanDetailView({ plan, onBack, onActionUpdate }: PlanDetailProps) {
     <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 24 }}>
         <div>
-          <p style={{ margin: 0, fontSize: 12, color: "#6b7280" }}>Quality &amp; Safety › Action Plans › {plan.id}</p>
-          <h1 style={{ margin: "4px 0 0", fontSize: 22, fontWeight: 700 }}>{plan.title}</h1>
-          <p style={{ margin: "4px 0 0", fontSize: 13, color: "#6b7280" }}>
+          <Typography intent="small" color="gray50" as="p" style={{ margin: 0 }}>Quality &amp; Safety › Action Plans › {plan.id}</Typography>
+          <Typography intent="h1" as="h1" style={{ margin: "4px 0 0" }}>{plan.title}</Typography>
+          <Typography intent="small" color="gray50" as="p" style={{ margin: "4px 0 0" }}>
             {plan.category} · Owner: {plan.owner} · Target: {plan.targetDate}
-          </p>
+          </Typography>
         </div>
         <Pill color={statusColor}>{statusLabel}</Pill>
       </div>
@@ -224,13 +223,11 @@ function PlanDetailView({ plan, onBack, onActionUpdate }: PlanDetailProps) {
       <Card shadowStrength={1} style={{ marginBottom: 16 }}>
         <div style={{ padding: "16px 24px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: "#374151" }}>Overall Progress</span>
-            <span style={{ fontSize: 13, fontWeight: 700, color: pct === 100 ? "#16a34a" : "#374151" }}>{pct}%</span>
+            <Typography intent="label" as="span">Overall Progress</Typography>
+            <Typography intent="label" as="span">{pct}%</Typography>
           </div>
-          <div style={{ height: 8, background: "#e5e7eb", borderRadius: 4, overflow: "hidden" }}>
-            <div style={{ height: "100%", width: `${pct}%`, background: pct === 100 ? "#16a34a" : "#2563eb", borderRadius: 4, transition: "width 0.3s" }} />
-          </div>
-          <p style={{ margin: "8px 0 0", fontSize: 12, color: "#6b7280" }}>{plan.description}</p>
+          <ProgressBar value={pct} />
+          <Typography intent="small" color="gray50" as="p" style={{ margin: "8px 0 0" }}>{plan.description}</Typography>
         </div>
       </Card>
 
@@ -251,24 +248,21 @@ function PlanDetailView({ plan, onBack, onActionUpdate }: PlanDetailProps) {
                 >
                   <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
                     <div style={{ flex: 1 }}>
-                      <p style={{ margin: "0 0 4px", fontSize: 14, fontWeight: 500, color: "#111827" }}>{action.title}</p>
-                      <p style={{ margin: 0, fontSize: 12, color: "#6b7280" }}>
+                      <Typography intent="body" as="p" style={{ margin: "0 0 4px", fontWeight: 500 }}>{action.title}</Typography>
+                      <Typography intent="small" color="gray50" as="p" style={{ margin: 0 }}>
                         {action.assignee} · Due {action.dueDate}
-                        {action.notes && <span style={{ color: "#9ca3af" }}> · {action.notes}</span>}
-                      </p>
+                        {action.notes && <Typography intent="small" color="gray40" as="span"> · {action.notes}</Typography>}
+                      </Typography>
                     </div>
                     <div style={{ display: "flex", gap: 6, flexShrink: 0, alignItems: "center" }}>
                       <Pill color={aColor}>{aLabel}</Pill>
                       {action.status !== "complete" && (
-                        <button
+                        <Button
+                          variant="secondary"
                           onClick={() => onActionUpdate(plan.id, action.id, "complete")}
-                          style={{
-                            fontSize: 12, padding: "3px 10px", borderRadius: 4, border: "1px solid #d1d5db",
-                            background: "#fff", cursor: "pointer", color: "#374151", fontWeight: 500,
-                          }}
                         >
                           Mark done
-                        </button>
+                        </Button>
                       )}
                     </div>
                   </div>
@@ -306,20 +300,20 @@ function PlanRow({ plan, onOpen }: { plan: ActionPlan; onOpen: (id: string) => v
     >
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-          <span style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em" }}>{plan.id}</span>
+          <Typography intent="small" color="gray40" as="span" style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}>{plan.id}</Typography>
           <Pill color={color}>{label}</Pill>
-          <span style={{ fontSize: 11, color: "#9ca3af" }}>{plan.category}</span>
+          <Typography intent="small" color="gray40" as="span">{plan.category}</Typography>
           {overdueCount > 0 && <Pill color="red">{overdueCount} overdue</Pill>}
         </div>
-        <p style={{ margin: "0 0 4px", fontSize: 14, fontWeight: 600, color: "#111827" }}>{plan.title}</p>
-        <p style={{ margin: "0 0 8px", fontSize: 12, color: "#6b7280" }}>Owner: {plan.owner} · Target: {plan.targetDate}</p>
+        <Typography intent="body" as="p" style={{ margin: "0 0 4px", fontWeight: 600 }}>{plan.title}</Typography>
+        <Typography intent="small" color="gray50" as="p" style={{ margin: "0 0 8px" }}>Owner: {plan.owner} · Target: {plan.targetDate}</Typography>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ flex: 1, height: 6, background: "#e5e7eb", borderRadius: 3, overflow: "hidden", maxWidth: 200 }}>
-            <div style={{ height: "100%", width: `${pct}%`, background: pct === 100 ? "#16a34a" : "#2563eb", borderRadius: 3 }} />
+          <div style={{ flex: 1, maxWidth: 200 }}>
+            <ProgressBar value={pct} />
           </div>
-          <span style={{ fontSize: 12, color: "#6b7280", flexShrink: 0 }}>
+          <Typography intent="small" color="gray50" as="span" style={{ flexShrink: 0 }}>
             {plan.actions.filter(a => a.status === "complete").length} / {plan.actions.length} actions complete
-          </span>
+          </Typography>
         </div>
       </div>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ color: "#9ca3af", marginLeft: 16, flexShrink: 0 }}>
@@ -370,15 +364,15 @@ export default function ActionPlansPage() {
       <DetailPage.Main>
         <DetailPage.Header>
           <DetailPage.Breadcrumbs>
-            <span style={{ fontSize: 12, color: "#6b7280" }}>Quality &amp; Safety › Action Plans</span>
+            <Typography intent="small" color="gray50" as="span">Quality &amp; Safety › Action Plans</Typography>
           </DetailPage.Breadcrumbs>
           <DetailPage.Title>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div>
-                <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>Action Plans</h1>
-                <p style={{ margin: "4px 0 0", fontSize: 13, color: "#6b7280" }}>
+                <Typography intent="h1" as="h1" style={{ margin: 0 }}>Action Plans</Typography>
+                <Typography intent="small" color="gray50" as="p" style={{ margin: "4px 0 0" }}>
                   Grandview Mixed-Use · {active.length} active plan{active.length !== 1 ? "s" : ""}
-                </p>
+                </Typography>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
                 {overdue.length > 0 && <Pill color="red">{overdue.length} overdue</Pill>}

@@ -5,9 +5,10 @@ import {
   Card,
   DetailPage,
   Form,
-  H2,
+  Link,
   Pill,
   Tabs,
+  Typography,
   useFormContext,
 } from "@procore/core-react";
 
@@ -130,11 +131,9 @@ const STATUS_PILL: Record<ObsStatus, { color: "red" | "blue" | "green"; label: s
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ borderBottom: "2px solid #e5e7eb", marginBottom: 16, paddingBottom: 8 }}>
-      <H2 style={{ fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", color: "#6b7280", margin: 0 }}>
-        {children}
-      </H2>
-    </div>
+    <Typography intent="label" color="gray50" as="h2" style={{ textTransform: "uppercase", letterSpacing: "0.05em", borderBottom: "1px solid", paddingBottom: 8, marginBottom: 16 }}>
+      {children}
+    </Typography>
   );
 }
 
@@ -178,7 +177,7 @@ function NewObsFormBody({ onCancel }: { onCancel: () => void }) {
       <Form.Row>
         <Form.TextArea name="description" label="Description" required description="Describe the condition observed and the associated risk." colWidth={12} />
       </Form.Row>
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 24, paddingTop: 20, borderTop: "1px solid #e5e7eb" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 24, paddingTop: 20, borderTop: "1px solid" }}>
         <Button variant="secondary" type="button" onClick={onCancel}>Cancel</Button>
         <Button variant="primary" type="submit" loading={isSubmitting}>Log Observation</Button>
       </div>
@@ -220,7 +219,7 @@ function ObsDetailFormBody({ obs, onCancel }: { obs: Observation; onCancel: () =
       <Form.Row>
         <Form.TextArea name="resolution" label="Resolution Notes" description="Describe the corrective action taken to resolve this observation." colWidth={12} />
       </Form.Row>
-      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 24, paddingTop: 20, borderTop: "1px solid #e5e7eb" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 24, paddingTop: 20, borderTop: "1px solid" }}>
         <Button variant="secondary" type="button" onClick={onCancel}>← Back to list</Button>
         <Button variant="primary" type="submit" loading={isSubmitting}>Save Changes</Button>
       </div>
@@ -268,9 +267,7 @@ function ObsDetailView({ obs, onBack, onSaved }: ObsDetailViewProps) {
             <Banner.Title>Observation updated</Banner.Title>
             <Banner.Body>
               {obs.id} has been updated.{" "}
-              <button onClick={onBack} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", fontSize: "inherit", color: "#1e40af", fontWeight: 600, textDecoration: "underline" }}>
-                Back to observations
-              </button>
+              <Link onClick={onBack}>Back to observations</Link>
             </Banner.Body>
           </Banner.Content>
         </Banner>
@@ -282,9 +279,9 @@ function ObsDetailView({ obs, onBack, onSaved }: ObsDetailViewProps) {
     <div style={{ maxWidth: 760, margin: "0 auto", padding: "32px 24px" }}>
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 24 }}>
         <div>
-          <p style={{ margin: 0, fontSize: 12, color: "#6b7280" }}>Quality &amp; Safety › Observations › {obs.id}</p>
-          <h1 style={{ margin: "4px 0 0", fontSize: 22, fontWeight: 700 }}>{obs.title}</h1>
-          <p style={{ margin: "4px 0 0", fontSize: 13, color: "#6b7280" }}>{obs.location} · Reported by {obs.reportedBy} · {obs.date}</p>
+          <Typography intent="small" color="gray50" as="p" style={{ margin: 0 }}>Quality &amp; Safety › Observations › {obs.id}</Typography>
+          <Typography intent="h1" as="h1" style={{ margin: "4px 0 0" }}>{obs.title}</Typography>
+          <Typography intent="small" color="gray50" as="p" style={{ margin: "4px 0 0" }}>{obs.location} · Reported by {obs.reportedBy} · {obs.date}</Typography>
         </div>
         <div style={{ display: "flex", gap: 8, flexShrink: 0, marginLeft: 16 }}>
           <Pill color={priorityColor}>{obs.priority.charAt(0).toUpperCase() + obs.priority.slice(1)}</Pill>
@@ -306,19 +303,19 @@ function ObsDetailView({ obs, onBack, onSaved }: ObsDetailViewProps) {
       <Card shadowStrength={1} style={{ marginBottom: 16 }}>
         <div style={{ padding: "20px 24px" }}>
           <SectionHeading>Description</SectionHeading>
-          <p style={{ margin: 0, fontSize: 14, color: "#374151", lineHeight: 1.6 }}>{obs.description}</p>
+          <Typography intent="body" as="p" style={{ margin: 0, lineHeight: 1.6 }}>{obs.description}</Typography>
           <div style={{ display: "flex", gap: 32, marginTop: 16, paddingTop: 16, borderTop: "1px solid #f3f4f6" }}>
             <div>
-              <p style={{ margin: "0 0 2px", fontSize: 11, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.04em" }}>Category</p>
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#111827" }}>{obs.category}</p>
+              <Typography intent="small" color="gray40" as="p" style={{ margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.04em" }}>Category</Typography>
+              <Typography intent="label" as="p" style={{ margin: 0 }}>{obs.category}</Typography>
             </div>
             <div>
-              <p style={{ margin: "0 0 2px", fontSize: 11, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.04em" }}>Assignee</p>
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#111827" }}>{obs.assignee}</p>
+              <Typography intent="small" color="gray40" as="p" style={{ margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.04em" }}>Assignee</Typography>
+              <Typography intent="label" as="p" style={{ margin: 0 }}>{obs.assignee}</Typography>
             </div>
             <div>
-              <p style={{ margin: "0 0 2px", fontSize: 11, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.04em" }}>Due</p>
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: isOverdue ? "#dc2626" : "#111827" }}>{obs.dueDate}</p>
+              <Typography intent="small" color="gray40" as="p" style={{ margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.04em" }}>Due</Typography>
+              <Typography intent="label" color={isOverdue ? "red45" : undefined} as="p" style={{ margin: 0 }}>{obs.dueDate}</Typography>
             </div>
           </div>
         </div>
@@ -355,13 +352,13 @@ function ObsRow({ obs, onOpen }: { obs: Observation; onOpen: (id: string) => voi
     >
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-          <span style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em" }}>{obs.id}</span>
+          <Typography intent="small" color="gray40" as="span" style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}>{obs.id}</Typography>
           <Pill color={priorityColor}>{obs.priority.charAt(0).toUpperCase() + obs.priority.slice(1)}</Pill>
           <Pill color={statusColor}>{statusLabel}</Pill>
           {isOverdue && <Pill color="red">Overdue</Pill>}
         </div>
-        <p style={{ margin: "0 0 2px", fontSize: 14, fontWeight: 600, color: "#111827" }}>{obs.title}</p>
-        <p style={{ margin: 0, fontSize: 12, color: "#6b7280" }}>{obs.location} · {obs.date} · Assignee: {obs.assignee}</p>
+        <Typography intent="body" as="p" style={{ margin: "0 0 2px", fontWeight: 600 }}>{obs.title}</Typography>
+        <Typography intent="small" color="gray50" as="p" style={{ margin: 0 }}>{obs.location} · {obs.date} · Assignee: {obs.assignee}</Typography>
       </div>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ color: "#9ca3af", marginLeft: 16, flexShrink: 0 }}>
         <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -401,13 +398,13 @@ export default function ObservationsPage() {
       <DetailPage.Main>
         <DetailPage.Header>
           <DetailPage.Breadcrumbs>
-            <span style={{ fontSize: 12, color: "#6b7280" }}>Quality &amp; Safety › Observations</span>
+            <Typography intent="small" color="gray50" as="span">Quality &amp; Safety › Observations</Typography>
           </DetailPage.Breadcrumbs>
           <DetailPage.Title>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div>
-                <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>Observations</h1>
-                <p style={{ margin: "4px 0 0", fontSize: 13, color: "#6b7280" }}>Grandview Mixed-Use · {open.length} open</p>
+                <Typography intent="h1" as="h1" style={{ margin: 0 }}>Observations</Typography>
+                <Typography intent="small" color="gray50" as="p" style={{ margin: "4px 0 0" }}>Grandview Mixed-Use · {open.length} open</Typography>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
                 {overdue.length > 0 && <Pill color="red">{overdue.length} overdue</Pill>}
@@ -443,7 +440,7 @@ export default function ObservationsPage() {
                 </div>
                 {observations.some(o => o.status === "resolved") && (
                   <div>
-                    <p style={{ fontSize: 12, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 10px" }}>Resolved</p>
+                    <Typography intent="small" color="gray40" as="p" style={{ textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 10px" }}>Resolved</Typography>
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                       {observations.filter(o => o.status === "resolved").map(o => <ObsRow key={o.id} obs={o} onOpen={setSelectedId} />)}
                     </div>

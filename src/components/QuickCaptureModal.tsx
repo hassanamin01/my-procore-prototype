@@ -1,9 +1,11 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import {
   Banner,
   Button,
   Form,
+  Link,
   Modal,
+  Typography,
   useFormContext,
 } from "@procore/core-react";
 
@@ -85,29 +87,21 @@ function SavedConfirmation({ capturedAt, incidentType, onClose }: ConfirmationPr
               />
             </svg>
           </div>
-          <h2
-            style={{
-              margin: "0 0 6px",
-              fontSize: 18,
-              fontWeight: 700,
-              color: "#111827",
-            }}
-          >
+          <Typography intent="h2" as="h2" style={{ margin: "0 0 6px" }}>
             Draft saved
-          </h2>
-          <p style={{ margin: 0, fontSize: 14, color: "#6b7280" }}>
+          </Typography>
+          <Typography intent="body" color="gray50" as="p" style={{ margin: 0 }}>
             Your team has been notified.
-          </p>
+          </Typography>
         </div>
 
         {/* Immutable record card */}
         <div
           style={{
-            background: "#f9fafb",
-            border: "1px solid #e5e7eb",
             borderRadius: 8,
             padding: "16px 20px",
             marginBottom: 16,
+            border: "1px solid",
           }}
         >
           <div
@@ -124,7 +118,7 @@ function SavedConfirmation({ capturedAt, incidentType, onClose }: ConfirmationPr
               height="14"
               viewBox="0 0 24 24"
               fill="none"
-              style={{ flexShrink: 0, color: "#6b7280" }}
+              style={{ flexShrink: 0 }}
             >
               <rect
                 x="3"
@@ -142,28 +136,26 @@ function SavedConfirmation({ capturedAt, incidentType, onClose }: ConfirmationPr
                 strokeLinecap="round"
               />
             </svg>
-            <span
-              style={{ fontSize: 11, fontWeight: 600, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" }}
-            >
+            <Typography intent="label" color="gray50" as="span" style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}>
               Captured — immutable
-            </span>
+            </Typography>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 24px" }}>
             <div>
-              <p style={{ margin: "0 0 2px", fontSize: 11, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+              <Typography intent="small" color="gray40" as="p" style={{ margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
                 Type
-              </p>
-              <p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: "#111827" }}>
+              </Typography>
+              <Typography intent="label" as="p" style={{ margin: 0 }}>
                 {incidentType}
-              </p>
+              </Typography>
             </div>
             <div>
-              <p style={{ margin: "0 0 2px", fontSize: 11, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+              <Typography intent="small" color="gray40" as="p" style={{ margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
                 Captured at
-              </p>
-              <p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: "#111827" }}>
+              </Typography>
+              <Typography intent="label" as="p" style={{ margin: 0 }}>
                 {formatted}
-              </p>
+              </Typography>
             </div>
           </div>
         </div>
@@ -210,20 +202,19 @@ function FormBody({ showOptional, onToggleOptional, onClose }: FormBodyProps) {
             display: "inline-flex",
             alignItems: "center",
             gap: 6,
-            background: "#fef3c7",
-            border: "1px solid #f59e0b",
+            border: "1px solid",
             borderRadius: 4,
             padding: "3px 10px",
             marginBottom: 20,
           }}
         >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="#d97706">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
             <circle cx="12" cy="12" r="10" />
             <path d="M12 8v4m0 4h.01" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
           </svg>
-          <span style={{ fontSize: 12, fontWeight: 600, color: "#92400e" }}>
+          <Typography intent="label" color="orange45" as="span">
             STAGE 1 · Target: under 30 seconds
-          </span>
+          </Typography>
         </div>
 
         {/* ── Required fields ── */}
@@ -268,22 +259,7 @@ function FormBody({ showOptional, onToggleOptional, onClose }: FormBodyProps) {
             marginTop: 4,
           }}
         >
-          <button
-            type="button"
-            onClick={onToggleOptional}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              background: "none",
-              border: "none",
-              padding: 0,
-              cursor: "pointer",
-              fontSize: 13,
-              fontWeight: 500,
-              color: "#2563eb",
-            }}
-          >
+          <Link onClick={onToggleOptional} style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <svg
               width="14"
               height="14"
@@ -303,10 +279,10 @@ function FormBody({ showOptional, onToggleOptional, onClose }: FormBodyProps) {
               />
             </svg>
             {showOptional ? "Hide" : "Add"} optional details
-            <span style={{ fontSize: 11, color: "#9ca3af", fontWeight: 400 }}>
+            <Typography intent="small" color="gray40" as="span">
               (can be completed in Stage 2)
-            </span>
-          </button>
+            </Typography>
+          </Link>
 
           {showOptional && (
             <div style={{ marginTop: 16 }}>

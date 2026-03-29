@@ -5,8 +5,9 @@ import {
   Card,
   DetailPage,
   Form,
-  H2,
+  Link,
   Pill,
+  Typography,
   useFormContext,
 } from "@procore/core-react";
 
@@ -125,11 +126,9 @@ function formatDt(iso: string) {
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ borderBottom: "2px solid #e5e7eb", marginBottom: 16, paddingBottom: 8 }}>
-      <H2 style={{ fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", color: "#6b7280", margin: 0 }}>
-        {children}
-      </H2>
-    </div>
+    <Typography intent="label" color="gray50" as="h2" style={{ textTransform: "uppercase", letterSpacing: "0.05em", borderBottom: "1px solid", paddingBottom: 8, marginBottom: 16 }}>
+      {children}
+    </Typography>
   );
 }
 
@@ -164,22 +163,22 @@ function Stage2FormBody({ incident, onSaved, onCancel }: Stage2FormBodyProps) {
       {/* Stage 2 badge */}
       <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#eff6ff", border: "1px solid #93c5fd", borderRadius: 4, padding: "3px 10px", marginBottom: 20 }}>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="#2563eb"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01" stroke="#fff" strokeWidth="2" strokeLinecap="round"/></svg>
-        <span style={{ fontSize: 12, fontWeight: 600, color: "#1e40af" }}>STAGE 2 · Full Incident Report</span>
+        <Typography intent="label" as="span">STAGE 2 · Full Incident Report</Typography>
       </div>
 
       {/* Immutable Stage 1 record */}
       <div style={{ background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 6, padding: "12px 16px", marginBottom: 24, display: "flex", gap: 32 }}>
         <div>
-          <p style={{ margin: "0 0 2px", fontSize: 11, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.04em" }}>Incident ID</p>
-          <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#111827" }}>{incident.id}</p>
+          <Typography intent="small" color="gray40" as="p" style={{ margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.04em" }}>Incident ID</Typography>
+          <Typography intent="label" as="p" style={{ margin: 0 }}>{incident.id}</Typography>
         </div>
         <div>
-          <p style={{ margin: "0 0 2px", fontSize: 11, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.04em" }}>Captured</p>
-          <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#111827" }}>{formatDt(incident.capturedAt)}</p>
+          <Typography intent="small" color="gray40" as="p" style={{ margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.04em" }}>Captured</Typography>
+          <Typography intent="label" as="p" style={{ margin: 0 }}>{formatDt(incident.capturedAt)}</Typography>
         </div>
         <div>
-          <p style={{ margin: "0 0 2px", fontSize: 11, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.04em" }}>Reported by</p>
-          <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#111827" }}>{incident.reportedBy}</p>
+          <Typography intent="small" color="gray40" as="p" style={{ margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "0.04em" }}>Reported by</Typography>
+          <Typography intent="label" as="p" style={{ margin: 0 }}>{incident.reportedBy}</Typography>
         </div>
       </div>
 
@@ -255,7 +254,7 @@ function Stage2FormBody({ incident, onSaved, onCancel }: Stage2FormBodyProps) {
         </Form.Row>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 32, paddingTop: 20, borderTop: "1px solid #e5e7eb" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 32, paddingTop: 20, borderTop: "1px solid" }}>
         <Button variant="secondary" type="button" onClick={onCancel}>
           ← Back to list
         </Button>
@@ -297,17 +296,17 @@ function IncidentRow({ incident, onOpen }: IncidentRowProps) {
     >
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-          <span style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em" }}>{incident.id}</span>
+          <Typography intent="small" color="gray40" as="span" style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}>{incident.id}</Typography>
           <Pill color={color}>{label}</Pill>
           {isOverdue && <Pill color="red">Stage 2 required</Pill>}
         </div>
-        <p style={{ margin: "0 0 2px", fontSize: 14, fontWeight: 600, color: "#111827" }}>{incident.type}</p>
-        <p style={{ margin: 0, fontSize: 12, color: "#6b7280" }}>
+        <Typography intent="body" as="p" style={{ margin: "0 0 2px", fontWeight: 600 }}>{incident.type}</Typography>
+        <Typography intent="small" color="gray50" as="p" style={{ margin: 0 }}>
           {formatDt(incident.capturedAt)} · {incident.location} · Reported by {incident.reportedBy}
-        </p>
+        </Typography>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginLeft: 24, flexShrink: 0 }}>
-        <span style={{ fontSize: 12, color: "#6b7280" }}>Assignee: {incident.assignee}</span>
+        <Typography intent="small" color="gray50" as="span">Assignee: {incident.assignee}</Typography>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ color: "#9ca3af" }}>
           <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
@@ -358,16 +357,14 @@ function DetailView({ incident, onBack, onSubmitted }: DetailViewProps) {
     return (
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "32px 24px" }}>
         <div style={{ marginBottom: 16 }}>
-          <p style={{ margin: 0, fontSize: 12, color: "#6b7280" }}>Quality &amp; Safety › Incidents › {incident.id}</p>
+          <Typography intent="small" color="gray50" as="p" style={{ margin: 0 }}>Quality &amp; Safety › Incidents › {incident.id}</Typography>
         </div>
         <Banner variant="info">
           <Banner.Content>
             <Banner.Title>Incident report submitted</Banner.Title>
             <Banner.Body>
               {incident.id} has been submitted for review.{" "}
-              <button onClick={onBack} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", fontSize: "inherit", color: "#166534", fontWeight: 600, textDecoration: "underline" }}>
-                Back to incidents
-              </button>
+              <Link onClick={onBack}>Back to incidents</Link>
             </Banner.Body>
           </Banner.Content>
         </Banner>
@@ -379,8 +376,8 @@ function DetailView({ incident, onBack, onSubmitted }: DetailViewProps) {
     <div style={{ maxWidth: 760, margin: "0 auto", padding: "32px 24px" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
         <div>
-          <p style={{ margin: 0, fontSize: 12, color: "#6b7280" }}>Quality &amp; Safety › Incidents › {incident.id}</p>
-          <h1 style={{ margin: "4px 0 0", fontSize: 22, fontWeight: 700 }}>{incident.type}</h1>
+          <Typography intent="small" color="gray50" as="p" style={{ margin: 0 }}>Quality &amp; Safety › Incidents › {incident.id}</Typography>
+          <Typography intent="h1" as="h1" style={{ margin: "4px 0 0" }}>{incident.type}</Typography>
         </div>
         <Pill color={color}>{label}</Pill>
       </div>
@@ -439,13 +436,13 @@ export default function IncidentsPage() {
       <DetailPage.Main>
         <DetailPage.Header>
           <DetailPage.Breadcrumbs>
-            <span style={{ fontSize: 12, color: "#6b7280" }}>Quality &amp; Safety › Incidents</span>
+            <Typography intent="small" color="gray50" as="span">Quality &amp; Safety › Incidents</Typography>
           </DetailPage.Breadcrumbs>
           <DetailPage.Title>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div>
-                <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>Incidents</h1>
-                <p style={{ margin: "4px 0 0", fontSize: 13, color: "#6b7280" }}>Grandview Mixed-Use · {open.length} open</p>
+                <Typography intent="h1" as="h1" style={{ margin: 0 }}>Incidents</Typography>
+                <Typography intent="small" color="gray50" as="p" style={{ margin: "4px 0 0" }}>Grandview Mixed-Use · {open.length} open</Typography>
               </div>
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                 <Pill color="red">{open.length} open</Pill>

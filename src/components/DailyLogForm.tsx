@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Banner, Button, Form, H2, Tabs, useFormContext } from "@procore/core-react";
+import { Banner, Button, Form, Tabs, Typography, useFormContext } from "@procore/core-react";
 
 // ── Option shapes ──────────────────────────────────────────────────────────────
 
@@ -126,26 +126,9 @@ const TABS: { id: Tab; label: string }[] = [
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      style={{
-        borderBottom: "2px solid #e5e7eb",
-        marginBottom: 16,
-        paddingBottom: 8,
-      }}
-    >
-      <H2
-        style={{
-          fontSize: 14,
-          fontWeight: 600,
-          textTransform: "uppercase",
-          letterSpacing: "0.05em",
-          color: "#6b7280",
-          margin: 0,
-        }}
-      >
-        {children}
-      </H2>
-    </div>
+    <Typography intent="label" color="gray50" as="h2" style={{ textTransform: "uppercase", letterSpacing: "0.05em", borderBottom: "1px solid", paddingBottom: 8, marginBottom: 16 }}>
+      {children}
+    </Typography>
   );
 }
 
@@ -472,12 +455,12 @@ export default function DailyLogForm() {
         }}
       >
         <div>
-          <p style={{ margin: 0, fontSize: 12, color: "#6b7280" }}>
+          <Typography intent="small" color="gray50" as="p">
             Quality &amp; Safety › Daily Logs
-          </p>
-          <h1 style={{ margin: "4px 0 0", fontSize: 22, fontWeight: 700 }}>
+          </Typography>
+          <Typography intent="h1" as="h1" style={{ marginTop: 4 }}>
             New Daily Log Entry
-          </h1>
+          </Typography>
         </div>
       </div>
 

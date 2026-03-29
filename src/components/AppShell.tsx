@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Banner, Button, DetailPage, Page } from "@procore/core-react";
+import { Banner, Button, DetailPage, Link, Page, Typography } from "@procore/core-react";
 import SidebarNav, { NavItemId } from "@/components/SidebarNav";
 import Dashboard from "@/components/Dashboard";
 import DailyLogForm from "@/components/DailyLogForm";
@@ -27,12 +27,12 @@ function PlaceholderView({ id }: { id: NavItemId }) {
       <DetailPage.Main>
         <DetailPage.Header>
           <DetailPage.Breadcrumbs>
-            <span style={{ fontSize: 12, color: "#6b7280" }}>
+            <Typography intent="small" color="gray50">
               Quality &amp; Safety › {meta.title}
-            </span>
+            </Typography>
           </DetailPage.Breadcrumbs>
           <DetailPage.Title>
-            <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>{meta.title}</h1>
+            <Typography intent="h1" as="h1">{meta.title}</Typography>
           </DetailPage.Title>
         </DetailPage.Header>
         <DetailPage.Body>
@@ -88,16 +88,7 @@ export default function AppShell() {
               </Banner.Title>
               <Banner.Body>
                 Stage 1 captured at {formattedTime}. Complete Stage 2 within 24 hours.{" "}
-                <button
-                  onClick={() => setDraft(null)}
-                  style={{
-                    background: "none", border: "none", padding: 0,
-                    cursor: "pointer", fontSize: "inherit",
-                    color: "#92400e", fontWeight: 600, textDecoration: "underline",
-                  }}
-                >
-                  Dismiss
-                </button>
+                <Link onClick={() => setDraft(null)} style={{ cursor: "pointer" }}>Dismiss</Link>
               </Banner.Body>
             </Banner.Content>
           </Banner>
@@ -117,21 +108,11 @@ export default function AppShell() {
         }}
       >
         {/* Sidebar toggle */}
-        <button
+        <Button
+          variant="secondary"
           onClick={() => setSidebarOpen((v) => !v)}
           aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
-          style={{
-            background: "none",
-            border: "1px solid #d1d5db",
-            borderRadius: 4,
-            padding: "5px 8px",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            color: "#374151",
-          }}
         >
-          {/* Hamburger / close icon */}
           {sidebarOpen ? (
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -141,11 +122,11 @@ export default function AppShell() {
               <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           )}
-        </button>
+        </Button>
 
-        <span style={{ fontSize: 14, fontWeight: 600, color: "#111827" }}>
+        <Typography intent="body" weight="semibold">
           Quality &amp; Safety
-        </span>
+        </Typography>
 
         <div style={{ marginLeft: "auto" }}>
           <Button variant="primary" onClick={() => setModalOpen(true)}>

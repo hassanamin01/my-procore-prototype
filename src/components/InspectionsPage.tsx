@@ -5,9 +5,12 @@ import {
   Card,
   DetailPage,
   Form,
-  H2,
+  Input,
+  Link,
   Pill,
+  ProgressBar,
   Tabs,
+  Typography,
   useFormContext,
 } from "@procore/core-react";
 
@@ -120,11 +123,9 @@ const RESULT_PILL: Record<InspectionResult, { color: "green" | "red" | "gray" | 
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ borderBottom: "2px solid #e5e7eb", marginBottom: 16, paddingBottom: 8 }}>
-      <H2 style={{ fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", color: "#6b7280", margin: 0 }}>
-        {children}
-      </H2>
-    </div>
+    <Typography intent="label" color="gray50" as="h2" style={{ textTransform: "uppercase", letterSpacing: "0.05em", borderBottom: "1px solid", paddingBottom: 8, marginBottom: 16 }}>
+      {children}
+    </Typography>
   );
 }
 
@@ -170,7 +171,7 @@ function NewInspectionFormBody({ onCancel }: { onCancel: () => void }) {
       <Form.Row>
         <Form.TextArea name="notes" label="Notes" colWidth={12} />
       </Form.Row>
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 24, paddingTop: 20, borderTop: "1px solid #e5e7eb" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 24, paddingTop: 20, borderTop: "1px solid" }}>
         <Button variant="secondary" type="button" onClick={onCancel}>Cancel</Button>
         <Button variant="primary" type="submit" loading={isSubmitting}>Create Inspection</Button>
       </div>
@@ -210,9 +211,7 @@ function ChecklistView({ inspection, onBack, onSaved }: ChecklistViewProps) {
             <Banner.Title>Inspection results saved</Banner.Title>
             <Banner.Body>
               {inspection.id} results submitted.{" "}
-              <button onClick={onBack} style={{ background: "none", border: "none", padding: 0, cursor: "pointer", fontSize: "inherit", color: "#1e40af", fontWeight: 600, textDecoration: "underline" }}>
-                Back to inspections
-              </button>
+              <Link onClick={onBack}>Back to inspections</Link>
             </Banner.Body>
           </Banner.Content>
         </Banner>
@@ -220,13 +219,17 @@ function ChecklistView({ inspection, onBack, onSaved }: ChecklistViewProps) {
     );
   }
 
+  const totalItems = items.length;
+  const doneItems = items.filter(i => i.result !== "pending").length;
+  const progressPct = totalItems > 0 ? Math.round((doneItems / totalItems) * 100) : 0;
+
   return (
     <div style={{ maxWidth: 800, margin: "0 auto", padding: "32px 24px" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
         <div>
-          <p style={{ margin: 0, fontSize: 12, color: "#6b7280" }}>Quality &amp; Safety › Inspections › {inspection.id}</p>
-          <h1 style={{ margin: "4px 0 0", fontSize: 22, fontWeight: 700 }}>{inspection.title}</h1>
-          <p style={{ margin: "4px 0 0", fontSize: 13, color: "#6b7280" }}>{inspection.area} · {inspection.inspector} · {inspection.date}</p>
+          <Typography intent="small" color="gray50" as="p" style={{ margin: 0 }}>Quality &amp; Safety › Inspections › {inspection.id}</Typography>
+          <Typography intent="h1" as="h1" style={{ margin: "4px 0 0" }}>{inspection.title}</Typography>
+          <Typography intent="small" color="gray50" as="p" style={{ margin: "4px 0 0" }}>{inspection.area} · {inspection.inspector} · {inspection.date}</Typography>
         </div>
         <Pill color={color}>{label}</Pill>
       </div>
@@ -246,17 +249,21 @@ function ChecklistView({ inspection, onBack, onSaved }: ChecklistViewProps) {
         <div style={{ padding: "24px 28px" }}>
           <div style={{ display: "flex", gap: 24, marginBottom: 20 }}>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 28, fontWeight: 800, color: "#16a34a" }}>{passCount}</div>
-              <div style={{ fontSize: 11, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" }}>Pass</div>
+              <Typography intent="h1" as="div" style={{ fontWeight: 800 }}>{passCount}</Typography>
+              <Typography intent="small" color="gray50" as="div" style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}>Pass</Typography>
             </div>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 28, fontWeight: 800, color: "#dc2626" }}>{failCount}</div>
-              <div style={{ fontSize: 11, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" }}>Fail</div>
+              <Typography intent="h1" color="red45" as="div" style={{ fontWeight: 800 }}>{failCount}</Typography>
+              <Typography intent="small" color="gray50" as="div" style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}>Fail</Typography>
             </div>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 28, fontWeight: 800, color: "#d97706" }}>{items.filter(i => i.result === "pending").length}</div>
-              <div style={{ fontSize: 11, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" }}>Pending</div>
+              <Typography intent="h1" color="orange45" as="div" style={{ fontWeight: 800 }}>{items.filter(i => i.result === "pending").length}</Typography>
+              <Typography intent="small" color="gray50" as="div" style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}>Pending</Typography>
             </div>
+          </div>
+
+          <div style={{ marginBottom: 20 }}>
+            <ProgressBar value={progressPct} />
           </div>
 
           <SectionHeading>Checklist</SectionHeading>
@@ -274,44 +281,34 @@ function ChecklistView({ inspection, onBack, onSaved }: ChecklistViewProps) {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
-                  <p style={{ margin: 0, fontSize: 14, color: "#111827", flex: 1 }}>{item.description}</p>
+                  <Typography intent="body" as="p" style={{ margin: 0, flex: 1 }}>{item.description}</Typography>
                   <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
                     {RESULT_OPTIONS.map(opt => (
-                      <button
+                      <Button
                         key={opt.id}
+                        variant="secondary"
                         onClick={() => setResult(item.id, opt.id as InspectionResult)}
                         style={{
                           padding: "3px 10px",
-                          fontSize: 12,
-                          fontWeight: 500,
-                          borderRadius: 4,
-                          border: "1px solid",
-                          cursor: "pointer",
                           borderColor: item.result === opt.id
                             ? opt.id === "pass" ? "#16a34a" : opt.id === "fail" ? "#dc2626" : opt.id === "pending" ? "#d97706" : "#9ca3af"
-                            : "#e5e7eb",
+                            : undefined,
                           background: item.result === opt.id
                             ? opt.id === "pass" ? "#dcfce7" : opt.id === "fail" ? "#fee2e2" : opt.id === "pending" ? "#fef9c3" : "#f3f4f6"
-                            : "#fff",
-                          color: item.result === opt.id
-                            ? opt.id === "pass" ? "#166534" : opt.id === "fail" ? "#991b1b" : opt.id === "pending" ? "#854d0e" : "#6b7280"
-                            : "#6b7280",
+                            : undefined,
                         }}
                       >
                         {opt.label}
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 </div>
                 {(item.result === "fail" || item.comment) && (
-                  <input
+                  <Input
                     value={item.comment}
-                    onChange={e => setComment(item.id, e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setComment(item.id, e.target.value)}
                     placeholder="Add comment…"
-                    style={{
-                      marginTop: 8, width: "100%", fontSize: 13, padding: "6px 10px",
-                      border: "1px solid #e5e7eb", borderRadius: 4, outline: "none", boxSizing: "border-box",
-                    }}
+                    style={{ marginTop: 8, width: "100%", boxSizing: "border-box" }}
                   />
                 )}
               </div>
@@ -350,16 +347,16 @@ function InspectionRow({ inspection, onOpen }: { inspection: Inspection; onOpen:
     >
       <div style={{ flex: 1 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-          <span style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em" }}>{inspection.id}</span>
+          <Typography intent="small" color="gray40" as="span" style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}>{inspection.id}</Typography>
           <Pill color={color}>{label}</Pill>
         </div>
-        <p style={{ margin: "0 0 2px", fontSize: 14, fontWeight: 600, color: "#111827" }}>{inspection.title}</p>
-        <p style={{ margin: 0, fontSize: 12, color: "#6b7280" }}>{inspection.area} · {inspection.inspector} · {inspection.date}</p>
+        <Typography intent="body" as="p" style={{ margin: "0 0 2px", fontWeight: 600 }}>{inspection.title}</Typography>
+        <Typography intent="small" color="gray50" as="p" style={{ margin: 0 }}>{inspection.area} · {inspection.inspector} · {inspection.date}</Typography>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 16, marginLeft: 24, flexShrink: 0 }}>
-        <div style={{ fontSize: 12, color: "#6b7280", textAlign: "right" }}>
-          <span style={{ color: "#16a34a", fontWeight: 600 }}>{passCount} pass</span>
-          {failCount > 0 && <span style={{ color: "#dc2626", fontWeight: 600 }}> · {failCount} fail</span>}
+        <div style={{ textAlign: "right" }}>
+          <Typography intent="small" as="span" style={{ fontWeight: 600 }}>{passCount} pass</Typography>
+          {failCount > 0 && <Typography intent="small" color="red45" as="span" style={{ fontWeight: 600 }}> · {failCount} fail</Typography>}
         </div>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ color: "#9ca3af" }}>
           <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -415,15 +412,15 @@ export default function InspectionsPage() {
       <DetailPage.Main>
         <DetailPage.Header>
           <DetailPage.Breadcrumbs>
-            <span style={{ fontSize: 12, color: "#6b7280" }}>Quality &amp; Safety › Inspections</span>
+            <Typography intent="small" color="gray50" as="span">Quality &amp; Safety › Inspections</Typography>
           </DetailPage.Breadcrumbs>
           <DetailPage.Title>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div>
-                <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>Inspections</h1>
-                <p style={{ margin: "4px 0 0", fontSize: 13, color: "#6b7280" }}>
+                <Typography intent="h1" as="h1" style={{ margin: 0 }}>Inspections</Typography>
+                <Typography intent="small" color="gray50" as="p" style={{ margin: "4px 0 0" }}>
                   Grandview Mixed-Use · {inspections.length} inspections
-                </p>
+                </Typography>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
                 {failed.length > 0 && <Pill color="red">{failed.length} failed</Pill>}

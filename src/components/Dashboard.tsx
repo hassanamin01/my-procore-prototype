@@ -1,48 +1,12 @@
-import { Card, DetailPage, H3, P, Pill } from "@procore/core-react";
+import { Card, DetailPage, Pill, Table, Typography } from "@procore/core-react";
 
 // ── Mock data ──────────────────────────────────────────────────────────────────
 
 const KPI_CARDS = [
-  {
-    label: "Safety Score",
-    value: "94",
-    unit: "/ 100",
-    trend: "+2 this week",
-    trendUp: true,
-    pillColor: "green" as const,
-    pillLabel: "Good",
-    accent: "#16a34a",
-  },
-  {
-    label: "Open Incidents",
-    value: "3",
-    unit: "active",
-    trend: "1 overdue Stage 2",
-    trendUp: false,
-    pillColor: "red" as const,
-    pillLabel: "Needs attention",
-    accent: "#dc2626",
-  },
-  {
-    label: "Inspection Pass Rate",
-    value: "87",
-    unit: "%",
-    trend: "-4% vs last week",
-    trendUp: false,
-    pillColor: "yellow" as const,
-    pillLabel: "Watch",
-    accent: "#d97706",
-  },
-  {
-    label: "Daily Logs",
-    value: "12",
-    unit: "this month",
-    trend: "Last entry: today",
-    trendUp: true,
-    pillColor: "blue" as const,
-    pillLabel: "On track",
-    accent: "#2563eb",
-  },
+  { label: "Safety Score",         value: "94", unit: "/ 100",     trend: "+2 this week",      trendUp: true,  pillColor: "green"  as const, pillLabel: "Good",            accentColor: "green45"  as const },
+  { label: "Open Incidents",       value: "3",  unit: "active",    trend: "1 overdue Stage 2", trendUp: false, pillColor: "red"    as const, pillLabel: "Needs attention",  accentColor: "red45"    as const },
+  { label: "Inspection Pass Rate", value: "87", unit: "%",         trend: "-4% vs last week",  trendUp: false, pillColor: "yellow" as const, pillLabel: "Watch",           accentColor: "orange45" as const },
+  { label: "Daily Logs",           value: "12", unit: "this month",trend: "Last entry: today",  trendUp: true,  pillColor: "blue"   as const, pillLabel: "On track",        accentColor: "blue45"   as const },
 ];
 
 const INCIDENTS = [
@@ -85,9 +49,9 @@ function TrendIcon({ up }: { up: boolean }) {
   return (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
       {up ? (
-        <path d="M18 15l-6-6-6 6" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M18 15l-6-6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--color-green45)" }} />
       ) : (
-        <path d="M6 9l6 6 6-6" stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--color-red45)" }} />
       )}
     </svg>
   );
@@ -95,22 +59,20 @@ function TrendIcon({ up }: { up: boolean }) {
 
 // ── KPI card ───────────────────────────────────────────────────────────────────
 
-function KpiCard({ label, value, unit, trend, trendUp, pillColor, pillLabel, accent }: typeof KPI_CARDS[0]) {
+function KpiCard({ label, value, unit, trend, trendUp, pillColor, pillLabel, accentColor }: typeof KPI_CARDS[0]) {
   return (
     <Card shadowStrength={1} style={{ padding: "20px 24px", flex: 1, minWidth: 180 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
-        <span style={{ fontSize: 12, fontWeight: 600, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-          {label}
-        </span>
+        <Typography intent="label" color="gray50">{label}</Typography>
         <Pill color={pillColor}>{pillLabel}</Pill>
       </div>
       <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 8 }}>
-        <span style={{ fontSize: 36, fontWeight: 800, color: accent, lineHeight: 1 }}>{value}</span>
-        <span style={{ fontSize: 14, color: "#9ca3af", fontWeight: 500 }}>{unit}</span>
+        <Typography intent="h1" color={accentColor} as="span">{value}</Typography>
+        <Typography intent="small" color="gray50" as="span">{unit}</Typography>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
         <TrendIcon up={trendUp} />
-        <span style={{ fontSize: 12, color: trendUp ? "#16a34a" : "#dc2626" }}>{trend}</span>
+        <Typography intent="small" color={trendUp ? "green45" : "red45"} as="span">{trend}</Typography>
       </div>
     </Card>
   );
@@ -124,15 +86,15 @@ export default function Dashboard() {
       <DetailPage.Main>
         <DetailPage.Header>
           <DetailPage.Breadcrumbs>
-            <span style={{ fontSize: 12, color: "#6b7280" }}>Quality &amp; Safety › Overview</span>
+            <Typography intent="small" color="gray50">Quality &amp; Safety › Overview</Typography>
           </DetailPage.Breadcrumbs>
           <DetailPage.Title>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div>
-                <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>Project Dashboard</h1>
-                <p style={{ margin: "4px 0 0", fontSize: 13, color: "#6b7280" }}>
+                <Typography intent="h1" as="h1">Project Dashboard</Typography>
+                <Typography intent="small" color="gray50" as="p" style={{ marginTop: 4 }}>
                   Grandview Mixed-Use · As of Mar 29, 2026
-                </p>
+                </Typography>
               </div>
               <Pill color="blue">Active</Pill>
             </div>
@@ -161,21 +123,18 @@ export default function Dashboard() {
                   {INCIDENTS.map((inc) => (
                     <div
                       key={inc.type}
-                      style={{
-                        display: "flex", alignItems: "center", justifyContent: "space-between",
-                        padding: "10px 16px", background: "#f9fafb", borderRadius: 6, border: "1px solid #e5e7eb",
-                      }}
+                      style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", borderRadius: 6, border: "1px solid" }}
                     >
-                      <span style={{ fontSize: 14, color: "#111827", fontWeight: 500 }}>{inc.type}</span>
+                      <Typography intent="body" weight="semibold">{inc.type}</Typography>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <span style={{ fontSize: 13, color: "#6b7280" }}>{inc.count} open</span>
+                        <Typography intent="small" color="gray50">{inc.count} open</Typography>
                         <Pill color={inc.color}>{inc.count}</Pill>
                       </div>
                     </div>
                   ))}
-                  <P style={{ fontSize: 12, color: "#9ca3af", margin: "4px 0 0" }}>
+                  <Typography intent="small" color="gray50" as="p">
                     1 draft awaiting Stage 2 completion · expires in 6 h
-                  </P>
+                  </Typography>
                 </div>
               </DetailPage.Section>
             </Card>
@@ -193,12 +152,12 @@ export default function Dashboard() {
                       style={{
                         display: "flex", alignItems: "center", justifyContent: "space-between",
                         padding: "9px 0",
-                        borderBottom: i < INSPECTION_SUMMARY.length - 1 ? "1px solid #f3f4f6" : "none",
+                        borderBottom: i < INSPECTION_SUMMARY.length - 1 ? "1px solid" : "none",
                       }}
                     >
                       <div>
-                        <span style={{ fontSize: 13, color: "#111827", fontWeight: 500 }}>{ins.area}</span>
-                        <span style={{ fontSize: 12, color: "#9ca3af", marginLeft: 8 }}>{ins.date}</span>
+                        <Typography intent="body" weight="semibold" as="span">{ins.area}</Typography>
+                        <Typography intent="small" color="gray50" as="span" style={{ marginLeft: 8 }}>{ins.date}</Typography>
                       </div>
                       <ResultPill result={ins.result} />
                     </div>
@@ -217,34 +176,27 @@ export default function Dashboard() {
                 heading="Recent Daily Logs"
                 pills={<Pill color="green">12 this month</Pill>}
               >
-                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-                  <thead>
-                    <tr>
-                      {["Date", "Superintendent", "Workers", "Status"].map((h) => (
-                        <th
-                          key={h}
-                          style={{
-                            textAlign: "left", padding: "0 0 8px", color: "#9ca3af",
-                            fontWeight: 600, fontSize: 11, textTransform: "uppercase",
-                            letterSpacing: "0.05em", borderBottom: "1px solid #e5e7eb",
-                          }}
-                        >
-                          {h}
-                        </th>
+                <Table>
+                  <Table.Container>
+                    <Table.Header>
+                      <Table.HeaderRow>
+                        {["Date", "Superintendent", "Workers", "Status"].map((h) => (
+                          <Table.HeaderCell key={h}>{h}</Table.HeaderCell>
+                        ))}
+                      </Table.HeaderRow>
+                    </Table.Header>
+                    <Table.Body>
+                      {RECENT_LOGS.map((log) => (
+                        <Table.BodyRow key={log.date}>
+                          <Table.TextCell>{log.date}</Table.TextCell>
+                          <Table.TextCell>{log.superintendent}</Table.TextCell>
+                          <Table.TextCell>{log.workers}</Table.TextCell>
+                          <Table.BodyCell><Pill color={log.pill}>{log.status}</Pill></Table.BodyCell>
+                        </Table.BodyRow>
                       ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {RECENT_LOGS.map((log, i) => (
-                      <tr key={log.date} style={{ borderBottom: i < RECENT_LOGS.length - 1 ? "1px solid #f3f4f6" : "none" }}>
-                        <td style={{ padding: "9px 0", color: "#374151", fontWeight: 500 }}>{log.date}</td>
-                        <td style={{ padding: "9px 0", color: "#374151" }}>{log.superintendent}</td>
-                        <td style={{ padding: "9px 0", color: "#374151" }}>{log.workers}</td>
-                        <td style={{ padding: "9px 0" }}><Pill color={log.pill}>{log.status}</Pill></td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </Table.Body>
+                  </Table.Container>
+                </Table>
               </DetailPage.Section>
             </Card>
 
@@ -258,26 +210,24 @@ export default function Dashboard() {
                   {OVERDUE_ACTIONS.map((action) => (
                     <div
                       key={action.id}
-                      style={{ padding: "12px 14px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 6 }}
+                      style={{ padding: "12px 14px", borderRadius: 6, border: "1px solid" }}
                     >
                       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af" }}>{action.id}</span>
-                        <span style={{ fontSize: 11, color: "#dc2626", fontWeight: 600 }}>{action.daysOver}d overdue</span>
+                        <Typography intent="label" color="gray50">{action.id}</Typography>
+                        <Typography intent="label" color="red45" weight="semibold">{action.daysOver}d overdue</Typography>
                       </div>
-                      <p style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 500, color: "#111827" }}>{action.title}</p>
-                      <span style={{ fontSize: 12, color: "#6b7280" }}>{action.assignee} · Due {action.due}</span>
+                      <Typography intent="body" weight="semibold" as="p" style={{ margin: "0 0 4px" }}>{action.title}</Typography>
+                      <Typography intent="small" color="gray50">{action.assignee} · Due {action.due}</Typography>
                     </div>
                   ))}
-                  <div
-                    style={{ padding: "12px 14px", background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 6, marginTop: 4 }}
-                  >
+                  <div style={{ padding: "12px 14px", borderRadius: 6, border: "1px solid", marginTop: 4 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <Pill color="yellow">Behind</Pill>
-                      <span style={{ fontSize: 13, fontWeight: 500, color: "#92400e" }}>Schedule status</span>
+                      <Typography intent="body" weight="semibold" color="orange45">Schedule status</Typography>
                     </div>
-                    <P style={{ margin: "6px 0 0", fontSize: 12, color: "#92400e" }}>
+                    <Typography intent="small" color="orange45" as="p" style={{ margin: "6px 0 0" }}>
                       2 days behind on structural framing. Recovery plan required.
-                    </P>
+                    </Typography>
                   </div>
                 </div>
               </DetailPage.Section>
@@ -300,12 +250,8 @@ export default function Dashboard() {
                   { label: "Wind",          value: WEATHER.wind },
                 ].map(({ label, value }) => (
                   <div key={label}>
-                    <P style={{ margin: 0, fontSize: 11, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 600 }}>
-                      {label}
-                    </P>
-                    <H3 style={{ margin: "4px 0 0", fontSize: 18, fontWeight: 700, color: "#111827" }}>
-                      {value}
-                    </H3>
+                    <Typography intent="label" color="gray50" as="p">{label}</Typography>
+                    <Typography intent="h2" as="p" style={{ marginTop: 4 }}>{value}</Typography>
                   </div>
                 ))}
               </div>

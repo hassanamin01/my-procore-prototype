@@ -1,4 +1,4 @@
-import { Menu } from "@procore/core-react";
+import { Menu, Typography } from "@procore/core-react";
 
 export type NavItemId =
   | "dashboard"
@@ -113,8 +113,7 @@ export default function SidebarNav({ selected, onSelect }: SidebarNavProps) {
       style={{
         width: 220,
         height: "100%",
-        borderRight: "1px solid #e5e7eb",
-        background: "#f9fafb",
+        borderRight: "1px solid",
         overflowY: "auto",
         paddingTop: 8,
       }}
@@ -125,19 +124,20 @@ export default function SidebarNav({ selected, onSelect }: SidebarNavProps) {
             onSelect={({ item }) => onSelect(item as NavItemId)}
           >
             <Menu.Group>
-              <span
+              <Typography
+                intent="small"
+                color="gray40"
+                as="span"
                 style={{
                   display: "block",
                   padding: "10px 16px 4px",
-                  fontSize: 11,
-                  fontWeight: 600,
                   textTransform: "uppercase",
                   letterSpacing: "0.07em",
-                  color: "#9ca3af",
+                  fontWeight: 600,
                 }}
               >
                 {group.label}
-              </span>
+              </Typography>
             </Menu.Group>
             <Menu.Options scrollable={false}>
               {group.items.map((navItem) => (
@@ -152,7 +152,6 @@ export default function SidebarNav({ selected, onSelect }: SidebarNavProps) {
                       alignItems: "center",
                       gap: 10,
                       padding: "2px 0",
-                      color: selected === navItem.id ? "#1d4ed8" : "#374151",
                     }}
                   >
                     {navItem.icon}
