@@ -1,0 +1,15 @@
+/* Design-system baseline: sans-serif so @procore/core-react (font-family: inherit) matches. */
+html,
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  margin: 0;
+  padding: 0;
+}
