@@ -38,6 +38,17 @@ const INSPECTION_SUMMARY = [
 
 const WEATHER = { condition: "Partly Cloudy", high: 68, low: 52, precipitation: "0.0 in", wind: "12 mph NW" };
 
+const PROJECT_SUMMARY = {
+  name: "Grandview Mixed-Use",
+  projectNumber: "PRJ-2024-0047",
+  completion: 62,
+  schedule: { status: "Behind", color: "red" as const, detail: "2 days behind" },
+  budget: { status: "On Track", color: "green" as const, detail: "$4.2M of $6.8M spent" },
+  workforce: { total: 47, subcontractors: 5 },
+  projectManager: "A. Chen",
+  superintendent: "J. Rivera",
+};
+
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
 function ResultPill({ result }: { result: string }) {
@@ -54,6 +65,70 @@ function TrendIcon({ up }: { up: boolean }) {
         <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--color-red45)" }} />
       )}
     </svg>
+  );
+}
+
+// ── Project Summary Card ───────────────────────────────────────────────────────
+
+function ProjectSummaryCard() {
+  return (
+    <Card shadowStrength={1} style={{ marginBottom: 24, padding: "20px 24px" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+        <div>
+          <Typography intent="h2" as="h2">{PROJECT_SUMMARY.name}</Typography>
+          <Typography intent="small" color="gray50" as="p" style={{ marginTop: 2 }}>
+            {PROJECT_SUMMARY.projectNumber} · PM: {PROJECT_SUMMARY.projectManager} · Super: {PROJECT_SUMMARY.superintendent}
+          </Typography>
+        </div>
+        <Pill color="blue">Active</Pill>
+      </div>
+
+      {/* Progress bar */}
+      <div style={{ marginBottom: 16 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+          <Typography intent="label" color="gray50">Overall Completion</Typography>
+          <Typography intent="label" weight="semibold">{PROJECT_SUMMARY.completion}%</Typography>
+        </div>
+        <div style={{ height: 8, borderRadius: 4, background: "var(--color-gray85, #e5e7eb)", overflow: "hidden" }}>
+          <div
+            style={{
+              height: "100%",
+              width: `${PROJECT_SUMMARY.completion}%`,
+              borderRadius: 4,
+              background: "var(--color-blue45, #3b82f6)",
+              transition: "width 0.4s ease",
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Stats row */}
+      <div style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
+        <div>
+          <Typography intent="label" color="gray50" as="p">Schedule</Typography>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 4 }}>
+            <Pill color={PROJECT_SUMMARY.schedule.color}>{PROJECT_SUMMARY.schedule.status}</Pill>
+            <Typography intent="small" color="gray50">{PROJECT_SUMMARY.schedule.detail}</Typography>
+          </div>
+        </div>
+        <div>
+          <Typography intent="label" color="gray50" as="p">Budget</Typography>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 4 }}>
+            <Pill color={PROJECT_SUMMARY.budget.color}>{PROJECT_SUMMARY.budget.status}</Pill>
+            <Typography intent="small" color="gray50">{PROJECT_SUMMARY.budget.detail}</Typography>
+          </div>
+        </div>
+        <div>
+          <Typography intent="label" color="gray50" as="p">Workforce Today</Typography>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 4 }}>
+            <Typography intent="h3" as="span">{PROJECT_SUMMARY.workforce.total}</Typography>
+            <Typography intent="small" color="gray50" as="span">
+              workers · {PROJECT_SUMMARY.workforce.subcontractors} subs on site
+            </Typography>
+          </div>
+        </div>
+      </div>
+    </Card>
   );
 }
 
@@ -102,6 +177,9 @@ export default function Dashboard() {
         </DetailPage.Header>
 
         <DetailPage.Body>
+
+          {/* ── Project Summary ── */}
+          <ProjectSummaryCard />
 
           {/* ── KPI row ── */}
           <div style={{ display: "flex", gap: 16, marginBottom: 24, flexWrap: "wrap" }}>
